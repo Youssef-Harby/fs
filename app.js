@@ -14,17 +14,17 @@ viewer.scene.primitives.add(Cesium.createOsmBuildings());
 
 // Set the initial view to New York City
 viewer.camera.flyTo({
-    destination: Cesium.Cartesian3.fromDegrees(-74.01, 40.71, 1500),
+    destination: Cesium.Cartesian3.fromDegrees(11.592640449882197, 48.1357942171306, 1000),
     orientation: {
-        heading: Cesium.Math.toRadians(20.0),
-        pitch: Cesium.Math.toRadians(-35.0),
+        heading: Cesium.Math.toRadians(25.0),
+        pitch: Cesium.Math.toRadians(-15.0),
         roll: 0.0
     }
 });
 
 // Flood simulation code
 const viewModel = {
-    waterLevel: 0.0
+    waterLevel: 552.0
 };
 
 Cesium.knockout.track(viewModel);
@@ -34,6 +34,9 @@ Cesium.knockout.getObservable(viewModel, 'waterLevel').subscribe(updateWaterLeve
 
 function updateWaterLevel() {
     const waterHeight = Number(viewModel.waterLevel);
+
+    // Log the current value of the slider
+    console.log("Current water level:", waterHeight);
 
     const material = Cesium.createElevationBandMaterial({
         scene: viewer.scene,
@@ -53,7 +56,7 @@ function updateWaterLevel() {
                         color: new Cesium.Color(1.0, 1.0, 1.0, 0.0)
                     },
                     {
-                        height: 10000,
+                        height: 3000,
                         color: new Cesium.Color(1.0, 1.0, 1.0, 0.0)
                     }
                 ]
