@@ -12,25 +12,34 @@
     <link href="styles.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="cesiumContainer"></div>
-    <div id="toolbar">
-      <table>
-        <tbody>
-          <tr>
-            <td>Water Level</td>
-            <td>
-              <input
-                type="range"
-                min="0"
-                max="3000"
-                step="0.1"
-                data-bind="value: waterLevel, valueUpdate: 'input'"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div id="sideMenu" class="side-menu">
+      <!-- charts or other content will go here in the future -->
     </div>
+
+    <button id="hamburgerMenu" class="hamburger-menu">&#9776;</button>
+
+    <div id="cesiumContainer">
+      <div id="toolbar">
+        <table>
+          <tbody>
+            <tr>
+              <td>Water Level</td>
+              <td>
+                <input
+                  type="range"
+                  min="0"
+                  max="3000"
+                  step="0.1"
+                  data-bind="value: waterLevel, valueUpdate: 'input'"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <script src="app.js"></script>
+    <script src="layout.js"></script>
   </body>
 </html>
