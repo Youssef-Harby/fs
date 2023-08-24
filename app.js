@@ -27,6 +27,38 @@ const viewModel = {
     waterLevel: 552.0
 };
 
+let increasing = true; // To determine if the water level is increasing or decreasing
+let animationInterval; // To store the interval ID
+
+function startAnimation() {
+    animationInterval = setInterval(() => {
+        if (increasing) {
+            viewModel.waterLevel += 5; // Adjust this value to control the speed of the animation
+            if (viewModel.waterLevel >= 600) {
+                increasing = false;
+            }
+        } else {
+            viewModel.waterLevel -= 5; // Adjust this value to control the speed of the animation
+            if (viewModel.waterLevel <= 450) {
+                increasing = true;
+            }
+        }
+        updateWaterLevel();
+    }, 200); // This will update the water level every second. Adjust this value to control the animation speed.
+}
+
+// Start the animation when the page loads
+startAnimation();
+
+// Add event listener to the slider to stop the animation when touched or clicked
+const slider = document.querySelector("input[type='range']");
+slider.addEventListener("mousedown", () => {
+    clearInterval(animationInterval);
+});
+slider.addEventListener("touchstart", () => {
+    clearInterval(animationInterval);
+});
+
 Cesium.knockout.track(viewModel);
 const toolbar = document.getElementById('toolbar');
 Cesium.knockout.applyBindings(viewModel, toolbar);
