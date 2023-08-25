@@ -8,9 +8,10 @@ function drawChart() {
     ]);
 
     var options = {
-        width: 200, height: 200,
-        redFrom: 2500, redTo: 3000,
-        yellowFrom: 2000, yellowTo: 2500,
+        min: 0, max: 3000,
+        width: 160, height: 160,
+        redFrom: 600, redTo: 3000,
+        yellowFrom: 400, yellowTo: 600,
         minorTicks: 5
     };
 
