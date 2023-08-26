@@ -24,7 +24,7 @@ viewer.camera.flyTo({
 
 // Flood simulation code
 const viewModel = {
-    waterLevel: 552.0
+    waterLevel: 390
 };
 
 let increasing = true; // To determine if the water level is increasing or decreasing
@@ -33,18 +33,18 @@ let animationInterval; // To store the interval ID
 function startAnimation() {
     animationInterval = setInterval(() => {
         if (increasing) {
-            viewModel.waterLevel += 5; // Adjust this value to control the speed of the animation
+            viewModel.waterLevel += 2; // Adjust this value to control the speed of the animation
             if (viewModel.waterLevel >= 600) {
                 increasing = false;
             }
         } else {
-            viewModel.waterLevel -= 5; // Adjust this value to control the speed of the animation
-            if (viewModel.waterLevel <= 450) {
+            viewModel.waterLevel -= 2; // Adjust this value to control the speed of the animation
+            if (viewModel.waterLevel <= 500) {
                 increasing = true;
             }
         }
         updateWaterLevel();
-    }, 200); // This will update the water level every second. Adjust this value to control the animation speed.
+    }, 60); // This will update the water level every second. Adjust this value to control the animation speed.
 }
 
 // Start the animation when the page loads
@@ -64,8 +64,28 @@ const toolbar = document.getElementById('toolbar');
 Cesium.knockout.applyBindings(viewModel, toolbar);
 Cesium.knockout.getObservable(viewModel, 'waterLevel').subscribe(updateWaterLevel);
 
+let modalShown = false;
+
+document.getElementById('closeModal').addEventListener('click', function () {
+    document.getElementById('alertModal').style.display = 'none';
+});
+
+
 function updateWaterLevel() {
     const waterHeight = Number(viewModel.waterLevel);
+
+    // Check if water level hits 600 and modal hasn't been shown before
+    if (waterHeight >= 600 && !modalShown) {
+        document.getElementById('alertModal').style.display = 'block';
+        modalShown = true; // Set the flag to true
+
+        // Hide the modal after 4 seconds
+        setTimeout(() => {
+            document.getElementById('alertModal').style.display = 'none';
+        }, 5000);
+    }
+
+
 
     // Log the current value of the slider
     console.log("Current water level:", waterHeight);

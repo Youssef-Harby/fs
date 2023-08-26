@@ -9,9 +9,10 @@ function drawChart() {
 
     var options = {
         min: 0, max: 3000,
-        width: 160, height: 160,
+        width: 120, height: 120,
         redFrom: 600, redTo: 3000,
         yellowFrom: 400, yellowTo: 600,
+        greenFrom: 200, greenTo: 400,
         minorTicks: 5
     };
 
