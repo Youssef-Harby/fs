@@ -12,15 +12,55 @@ var viewer = new Cesium.Viewer('cesiumContainer', {
 // Add OSM 3D buildings
 viewer.scene.primitives.add(Cesium.createOsmBuildings());
 
-// Set the initial view to New York City
-viewer.camera.flyTo({
-    destination: Cesium.Cartesian3.fromDegrees(11.592640449882197, 48.1357942171306, 1000),
-    orientation: {
-        heading: Cesium.Math.toRadians(25.0),
-        pitch: Cesium.Math.toRadians(-15.0),
-        roll: 0.0
+let degree = 0;
+let continueMoving = true; // Flag to determine if the camera should continue moving
+
+const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas);
+
+// Stop the camera movement on left click
+handler.setInputAction(() => {
+    continueMoving = false;
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+// Stop the camera movement on right click
+handler.setInputAction(() => {
+    continueMoving = false;
+}, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+
+function moveCamera() {
+    // If the flag is set to false, stop the camera movement
+    if (!continueMoving) {
+        return;
     }
-});
+
+    // Calculate the new heading based on the degree
+    const heading = Cesium.Math.toRadians(degree);
+
+    // Update the camera's position
+    viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(11.55 + 0.05 * Math.cos(heading), 48.13 + 0.05 * Math.sin(heading), 1000),
+        orientation: {
+            heading: heading,
+            pitch: Cesium.Math.toRadians(-15.0),
+            roll: 0.0
+        },
+        duration: 7, // Duration for each segment of the movement
+        complete: () => {
+            degree += 25; // Increment the degree for the next movement
+            if (degree < 360) {
+                moveCamera(); // Continue moving the camera only if the flag is true
+            }
+            if (!continueMoving) {
+                return;
+            }
+        }
+    });
+}
+
+// Start the camera movement
+moveCamera();
+
+
 
 // Flood simulation code
 const viewModel = {
@@ -44,7 +84,7 @@ function startAnimation() {
             }
         }
         updateWaterLevel();
-    }, 60); // This will update the water level every second. Adjust this value to control the animation speed.
+    }, 100); // This will update the water level every second. Adjust this value to control the animation speed.
 }
 
 // Start the animation when the page loads
